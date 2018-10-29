@@ -3,12 +3,18 @@
 /*      by Jon A. Nuljon                                                */
 /*    December 2017                                                     */
 /************************************************************************/
+#define DEBUG 1 // Switch debug output on and off by 1 or 0
+#if DEBUG
+#define PRINTS(s)   { Serial.print(F(s)); }
+#define PRINT(s,v)  { Serial.print(F(s)); Serial.print(v); }
+#else
+#define PRINTS(s)
+#define PRINT(s,v)
+#endif
+
 #include "HapticSensor.h"
-#include <CapacitiveSensor.h>
-
-
 // CONSTRUCTOR: sense signal pin , PWM output pin
-HapticSensor::HapticSensor(uint8_t receivePin, uint8_t pwmPin) : signalPin(receivePin), feedbackPin(pwmPin)
+HapticSensor::HapticSensor(uint8_t receivePin, uint8_t pwmPin) : signal_pin_(receivePin), feedbackPin(pwmPin)
 {
 }
 
@@ -33,7 +39,6 @@ float HapticSensor::readSensor(float *sensorHistory)
     }
     sensorHistory[0] = sensed;
     PRINT("\tCS: ", sensed);
-    ;
     return sensed;
 }
 
@@ -69,9 +74,9 @@ int HapticSensor::feedbackSensor(float *sensorHistory, int vMax)
         digitalWrite(LED, 1); // turn on LED
     }
     if (vNew < vMax)
-        spinHS(vNew);
+        spin_hs(vNew);
     else
-        spinHS(vMax);
+        spin_hs(vMax);
     //feedbackSensor(temp);
     vOld = vNew;
     return vOld;
@@ -95,13 +100,13 @@ void HapticSensor::feedbackSensor(int v)
     int vMax = 255;
     // constrain(v, 0, vMax);
     if (v < vMax)
-        spinHS(v);
+        spin_hs(v);
     else
-        spinHS(vMax);
+        spin_hs(vMax);
 }
 
 // spin an individual Haptic Sensor at value V
-void HapticSensor::spinHS(int v)
+void HapticSensor::spin_hs(int v)
 {
     analogWrite(feedbackPin, v);
     PRINT("v: ", v);
