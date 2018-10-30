@@ -38,12 +38,12 @@ float HapticSensor::readSensor(float *sensorHistory)
         sensed = 0.0;
     }
     sensorHistory[0] = sensed;
-    PRINT("\tCS: ", sensed);
+    PRINT(" CS: ", sensed);
     return sensed;
 }
 
 // this is the private method
-int HapticSensor::feedbackSensor(float *sensorHistory, int vMax)
+int HapticSensor::feedbackSensor(float *sensorHistory, int vMax = 255)
 {
     float n = tau / deltat;
     float p = 0.0; //integrated cos power
@@ -54,7 +54,7 @@ int HapticSensor::feedbackSensor(float *sensorHistory, int vMax)
         q = q + Q[m] * sensorHistory[m]; // q = sum of (Sin[omega*t]*Exp[t/tau] * sensor reading)
     }
     float F = k * sqrt(p * p + q * q) / 16; // root Mean Square *90%
-    PRINT("\tF: ", F);
+    //PRINT(" F: ", F);
     float temp = ((F * gamma - (float)vOld) / n);
     temp = temp + (float)vOld;
     //(long)temp;
@@ -90,13 +90,12 @@ float HapticSensor::readSensor()
     {
         sensed = 0.0;
     }
-    PRINT("\tCS: ", sensed);
+    PRINT(" CSp: ", sensed);
     return sensed;
 }
 // this is the public method
 void HapticSensor::feedbackSensor(int v)
 {
-    PRINTS("\n");
     int vMax = 255;
     // constrain(v, 0, vMax);
     if (v < vMax)
@@ -109,7 +108,7 @@ void HapticSensor::feedbackSensor(int v)
 void HapticSensor::spin_hs(int v)
 {
     analogWrite(feedbackPin, v);
-    PRINT("v: ", v);
+    PRINT(" v: ", v);
     PRINTS("\t|");
 }
 
@@ -120,13 +119,12 @@ void HapticSensor::update()
     //PRINT("\tUpdate time: ", millis() - lastUpdate);
     float *ptrHistory = &sensorHistory[0];
     readSensor(ptrHistory);
-    int vMax = 255;
-    feedbackSensor(ptrHistory, vMax);
+    feedbackSensor(ptrHistory);
 }
 
 // stop pulsing motor
 void HapticSensor::stopHS()
 {
     analogWrite(feedbackPin, 0);
-    PRINTS("\n^^^^^^^^^^^^^^^^^^^ resting");
+    PRINTS(" stop HS feedback overide! ");
 }

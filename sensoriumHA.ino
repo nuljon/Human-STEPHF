@@ -14,23 +14,22 @@ const float HapticSensor::P[] = { 1.00, 0.92, 0.71, 0.38, 0.00, -0.38, -0.71, -0
 
 // precalculated values for Q = Sin[omega*t]*Exp[t/tau]
 const float HapticSensor::Q[] = { 0.00, 0.38, 0.71, 0.92, 1.00, 0.92, 0.71, 0.38, 0.00, -0.38, -0.71, -0.92, -1.00, -0.92, -0.71, -0.38 };
-
 // wave decay factor
 const float HapticSensor::k = 0.9;
 
 // gamma - adjust to tune new hardware
 const float HapticSensor::gamma = 7.1;
-// lastUpdate is a time register
+// lastUpdate is a time register not used
 long HapticSensor::lastUpdate = 0;
 // force limit
-const float HapticSensor::fMax = 1023.0;
+//const float HapticSensor::fMax = 1023.0;
 
 // instantiate sensors on pin pairs read pin, pwm pin
 
-HapticSensor hs1 = HapticSensor(13, 9);
-HapticSensor hs2 = HapticSensor(15, 5);
-HapticSensor hs3 = HapticSensor(14, 6);
-HapticSensor hs4 = HapticSensor(16, 3);
+HapticSensor hs1 = HapticSensor(14, 9);
+HapticSensor hs2 = HapticSensor(15, 6);
+HapticSensor hs3 = HapticSensor(16, 5);
+HapticSensor hs4 = HapticSensor(17, 3);
 
 
 // define the LED pin
@@ -64,19 +63,19 @@ void setup() {
 }
 
 void loop() {
-	static long lastTime = 0;
-	static int count = 0;
+  static long lastTime = 0;
+  //static int count = 0;
 	const uint8_t deltat = 42;
 	if (lastTime + deltat <= millis() ) {
-	  PRINTS("\nhs1 ");
-      hs1.update();
-      PRINTS("\ths2 ");
-	  hs2.update();
-      PRINTS("\ths3 ");
-      hs3.update();
-  	  PRINTS("\ths4 ");
-	  hs4.update();
+    PRINTS("\nhs1 ");
+    hs1.update();
+    PRINTS("\ths2 ");
+    hs2.update();
+    PRINTS("\ths3 ");
+    hs3.update();
+    PRINTS("\ths4 ");
+    hs4.update();
 	  lastTime = millis();
-	  count++;
-	}
+    // count++;
+  }
 }

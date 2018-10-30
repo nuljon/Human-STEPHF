@@ -33,22 +33,22 @@ class HapticSensor
   private:
     /******************* CLASS VARIABLES ****************************************/
     // supply_pin names the pin that all the capSensor objects share for voltage
-    static const uint8_t supply_pin = 19;
+    static const uint8_t supply_pin = 12;
     // P is an array that holds the wave component values P = Cos[omega*t]
     static const float P[16];
     // Q is an an that array holds the wave component values Q = Sin[omega*t]*Exp[t/tau]
     static const float Q[16];
     // tau is the wavelength period in milliseconds
-    static const int tau = 666;
+    static const int tau = 333;
     // deltat sets the duration in milliseconds between sensor reads
-    static const uint8_t deltat = 84;
+    static const uint8_t deltat = 42;
     // k sets the wave decay factor
     static const float k;
     // fMax is the feedback maximum force limiter
-    static const float fMax;
+    //static const float fMax;
     // gamma is an amplification factor to tune the haptic feedback signal
     static const float gamma;
-    // lastUpdate is register to keep time
+    // lastUpdate is register to keep time not used
     static long lastUpdate;
     static const uint8_t LED = 13;
 
@@ -63,21 +63,21 @@ class HapticSensor
     int vOld = 0;
     // readSensor() captures the sensation signal. It requires passing a pointer to sensorHistory.
     float readSensor(float *sensor_history);
-    // It requires passing a  and the .
+
 	/**
-     * \feedbackSensor() returns the haptic response value. 
-     * \param sensor_history 
-     * \param vMax maximum feedback value limit
+     * \feedbackSensor() returns the haptic response value.
+     * \param sensor_history
+     * \param vMax maximum feedback value limit default=255
      * \return the feedback response value
      */
-    int feedbackSensor(float *sensorHistory, int vMax = 250);
-    // 
+    int feedbackSensor(float*, int vmax=255);
+    //
 	/**
-     * \spinHS() transmits the feedback response. 
+     * \spinHS() transmits the feedback response.
      * \param v  feedback response value.
      */
     void spin_hs(int v);
-    
+
 	/**
      * \sensorHistory stores the last 16 sensation signals.
      */
