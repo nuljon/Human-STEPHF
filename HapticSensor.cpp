@@ -90,7 +90,7 @@ float HapticSensor::readSensor()
     {
         sensed = 0.0;
     }
-    PRINT(" CSp: ", sensed);
+    PRINT("\tCSp: ", sensed);
     return sensed;
 }
 // this is the public method
@@ -108,7 +108,7 @@ void HapticSensor::feedbackSensor(int v)
 void HapticSensor::spin_hs(int v)
 {
     analogWrite(feedbackPin, v);
-    PRINT(" v: ", v);
+    PRINT("\tv: ", v);
     PRINTS("\t|");
 }
 
